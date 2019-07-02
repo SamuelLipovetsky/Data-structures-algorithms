@@ -1,0 +1,16 @@
+
+arrays:
+(listas no python sao arrays redimensionaveis)
+acessar qualquer  elemento de uma lista leva o mesmo tempo (O(1)),porem adicionar elementos leva um tempo 
+linear(O(n)) onde n é o tamanho da lista, isso ocorre devido ao modo como as arrays sao guardadas na memória.Dentro 
+da memoria as arrays sao um pedaço da ram e esse pedaço é divido em outros pedaços que sao indexados, assim para
+adicionar um elemento a uma array uma nova array é criada em outro local da memoria, por isso o tempo linear (O(n)).
+
+linked list:
+ao contrarios das arrays as linked list nao sao um pedaço contiguo da memoria, cada valor é disperso e contem as 
+instruçoes para chegar no proximo valor por meio de uma estrutura de Nodos. Assim  adicionar um elemento no 
+inicio de cada linked list independe do tamanho da mesma, porem o tempo necessarios para adicionar um elemento 
+em outro local que nao o inicio ou o fim  nao é constante sendo que será necessario
+passar por todos os valores antes do local a ser adicionado o novo nodo.Para acessar um elemento o tempo cresce linearmente , visto
+que é necessario por todo os elementos previso
+(TENTAR USAR MT RECURSAO)
