@@ -1,0 +1,2 @@
+https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/
+https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm
