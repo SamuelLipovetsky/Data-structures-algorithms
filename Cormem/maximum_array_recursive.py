@@ -2,7 +2,6 @@ import math
 
 
 def find_max_crossing_subarray(A, low, mid, high):
-    print(A[low:high])
     left_sum = float('-inf')
     sum = 0
     for i in range(mid, low - 1, -1):
@@ -24,8 +23,6 @@ def find_max_crossing_subarray(A, low, mid, high):
 
 
 def find_maximum_subarray(A, low, high):
-    # print(low, high)
-    print(A[low:high])
     if high == low:
         print(A[low])
         return(low, high, A[low])

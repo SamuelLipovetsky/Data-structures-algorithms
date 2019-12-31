@@ -1,0 +1,8 @@
+Representação dos grafos:
+    Matriz de adjacencia:
+        https://pt.wikipedia.org/wiki/Matriz_de_adjac%C3%AAncia
+    
+Busca e caminho no grafo:
+    BFS:
+        https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/
+        https://pt.wikipedia.org/wiki/Busca_em_largura

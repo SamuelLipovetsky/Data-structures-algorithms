@@ -1,1 +1,2 @@
-https://www.geeksforgeeks.org/window-sliding-technique/
+sliding window:
+    https://www.geeksforgeeks.org/window-sliding-technique/
