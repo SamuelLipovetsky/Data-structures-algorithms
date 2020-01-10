@@ -4,3 +4,6 @@ paridade de uma permutação:
 solvabilidade de "tiles" -> inversoes e paridade: 
 
     https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
+
+inversoes:
+    https://en.wikipedia.org/wiki/Inversion_(discrete_mathematics)
