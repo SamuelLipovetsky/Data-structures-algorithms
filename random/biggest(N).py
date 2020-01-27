@@ -7,15 +7,12 @@ def Biggest(lista):
         else:
 
             l[m]=lista[m] -lista[m-1]
-    
     x=m=0
     for z in l:
         x=x+z
-       
         if(m<=x):
             m=x
            
-            
 
     return m
 

@@ -1,8 +1,9 @@
 {
-    "files.associations": {
-        "iostream": "cpp",
-        "ostream": "cpp",
-        "cmath": "cpp",
-        "array": "cpp"
-    }
+  "files.associations": {
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "cmath": "cpp",
+    "array": "cpp",
+    "code-runner.runInTerminal": true
+  }
 }
