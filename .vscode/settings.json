@@ -4,6 +4,9 @@
     "ostream": "cpp",
     "cmath": "cpp",
     "array": "cpp",
-    "code-runner.runInTerminal": true
+    "code-runner.runInTerminal": true,
+    "string": "cpp",
+    "*.tcc": "cpp",
+    "cstdio": "cpp"
   }
 }

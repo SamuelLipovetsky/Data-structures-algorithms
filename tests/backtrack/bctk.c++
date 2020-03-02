@@ -11,17 +11,14 @@ bool problem(int index, int target_sum, int atual_sum)
     if (index == 10 && atual_sum <= target_sum)
     {
         int total = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            total += perm[i] * i;
-        }
-        cout << total << endl;
+
         return true;
     }
 
     for (int i = 0; i < 10; i++)
     {
-        if (usados.count(i) == 0 && atual_sum < target_sum)
+
+        if (usados.count(i) == 0 && atual_sum <= target_sum)
         {
             perm[index] = i;
             atual_sum += i * arr[index];
@@ -67,4 +64,11 @@ int main()
             cout << -1 << endl;
         }
     }
+    // int cou = 0;
+    // int arr[10] = {2, 6, 8, 9, 7, 5, 4, 3, 1, 0};
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     cou += arr[i] * i;
+    // }
+    // cout << cou;
 }

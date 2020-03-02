@@ -33,23 +33,22 @@ map<array<int, 2>, int> pecas = {
     {{5, 5}, 26},
     {{5, 6}, 27},
     {{6, 6}, 28}};
-int matriz[8][9] = {};
-int arr[8][9] = {};
-
-int problem(set<array<int, 2>> usados, int x, int y)
+int matriz[10][10] = {};
+int arr[10][10] = {};
+void problem(set<array<int, 2>> *usados, int x, int y)
 {
     int candidatos[16];
     int cnt = 0;
-    if (usados.size() == 28)
+    if ((*usados).size() == 28)
     {
         geral++;
     }
-    if (y == 9 and x < 9)
+    if (y == 9 and x < 8)
     {
         y = 1;
         x++;
     }
-    if (arr[x][y] == 0 && usados.size() < 28)
+    if (arr[x][y] == 0 && (*usados).size() < 28)
     {
 
         if (arr[x + 1][y] == 0 && matriz[x + 1][y] != -1)
@@ -74,15 +73,15 @@ int problem(set<array<int, 2>> usados, int x, int y)
         }
 
         int i = 0;
-        while (i < cnt)
+        while (i < cnt - 1)
         {
 
             array<int, 2> used = {candidatos[i], candidatos[i + 1]};
 
-            if (usados.count(used) == 0)
+            if ((*usados).count(used) == 0)
             {
 
-                usados.insert(used);
+                (*usados).insert(used);
                 int new_x = candidatos[i + 2];
                 int new_y = candidatos[i + 3];
                 i += 4;
@@ -92,27 +91,15 @@ int problem(set<array<int, 2>> usados, int x, int y)
                 problem(usados, x, y + 1);
                 arr[x][y] = 0;
                 arr[new_x][new_y] = 0;
-                usados.erase(used);
+                (*usados).erase(used);
             }
             else
             {
                 i += 4;
-                if (usados.size() == 28)
-                {
-                    for (int i = 1; i < 8; i++)
-                    {
-                        for (int j = 1; j < 9; j++)
-                        {
-                            cout << arr[i][j] << " ";
-                        }
-                        cout << endl;
-                    }
-                    cout << endl;
-                }
             }
         }
     }
-    else if (arr[x][y] != -1 && usados.size() < 28)
+    else if (arr[x][y] != -1 && (*usados).size() < 28)
     {
         problem(usados, x, y + 1);
     }
@@ -148,7 +135,7 @@ int main()
             }
         }
         set<array<int, 2>> used;
-        problem(used, 1, 1);
+        problem(&used, 1, 1);
         cout << "Teste " << k + 1 << endl;
         cout << geral << endl;
         ;
