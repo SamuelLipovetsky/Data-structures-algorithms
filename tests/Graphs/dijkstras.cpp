@@ -22,6 +22,16 @@ public:
         return obj.dist < obj1.dist;
     }
 };
+void printQueue(priority_queue<int, vector<dj>> q)
+{
+    //printing content of queue
+    while (!q.empty())
+    {
+        cout << " " << q.top().no;
+        q.pop();
+    }
+    cout << endl;
+}
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -76,9 +86,7 @@ int main()
         {
             visited[q.top().no] = 1;
             temp = 0;
-            // printQueue(q);
-
-            min = INT32_MAX;
+            printQueue(q);
             for (int i = 0; i < n; i++)
             {
 
