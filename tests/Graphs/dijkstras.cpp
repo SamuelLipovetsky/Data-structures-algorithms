@@ -40,18 +40,15 @@ int main()
 
     priority_queue<int, vector<dj>, greater<dj>> q;
 
-    int adj[200][200] = {};
-    int visited[200] = {};
-    int dists[200] = {};
-    int pre[200] = {};
-    while (1)
+    while (true)
     {
+        int adj[200][200];
+        int visited[200];
+        int dists[200];
+        int pre[200];
         cin >> n >> m;
         if (n == 0 || m == 0)
-        {
             break;
-        }
-
         for (int i = 0; i < 200; i++)
         {
             dists[i] = INT32_MAX;
@@ -59,14 +56,15 @@ int main()
             pre[i] = 0;
             for (int j = 0; j < 200; j++)
             {
-                adj[i][j] = 0;
+                adj[i][j] = INT32_MAX;
             }
         }
 
         for (int k = 0; k < m; k++)
         {
             cin >> i >> j >> t;
-            adj[i - 1][j - 1] = t;
+            if (t < adj[i - 1][j - 1])
+                adj[i - 1][j - 1] = t;
         }
 
         cin >> inicio >> fim;
@@ -86,28 +84,26 @@ int main()
         {
             visited[q.top().no] = 1;
             temp = 0;
-            printQueue(q);
+            int atual = q.top().no;
+            q.pop();
             for (int i = 0; i < n; i++)
             {
 
-                if (adj[q.top().no][i] != 0 && visited[i] == 0)
+                if (adj[atual][i] != INT32_MAX && visited[i] == 0)
                 {
 
-                    temp = adj[q.top().no][i] + dists[q.top().no];
+                    temp = adj[atual][i] + dists[atual];
                     if (dists[i] > temp)
                     {
                         dists[i] = temp;
-                        pre[i] = q.top().pre;
                     }
-                    dj te = {i, dists[i], q.top().no};
+                    dj te = {i, dists[i], atual};
                     q.push(te);
                 }
             }
-
-            q.pop();
         }
         if (dists[fim] == INT32_MAX)
-            cout << -1 << endl;
+            cout << "-1" << endl;
         else
             cout << dists[fim] << endl;
     }
