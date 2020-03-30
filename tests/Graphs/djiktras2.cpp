@@ -1,98 +1,93 @@
 #include <iostream>
-#include <cstdio>
-#include <cstdlib>
+#include <string>
 #include <vector>
 #include <set>
+#include <map>
+#include <deque>
+#include <cstdio>
+#include <cstdlib>
+#include <algorithm>
+#include <stack>
 #include <queue>
-#include <bits/stdc++.h>
+
 using namespace std;
-class dj
+
+#define max 99999
+
+typedef pair<int, int> node;
+typedef vector<vector<node>> graph;
+void dijkstra(graph g, int u, int v)
 {
-public:
-    int no;
-    int dist;
-    int pre;
-    friend bool operator>(const dj &obj, const dj &obj1)
+
+    // Variaveis;
+    vector<int> peso;
+    priority_queue<node> fila;
+    int atual, elemento, custo;
+
+    peso.resize(g.size(), max);
+
+    peso[u] = 0;
+
+    fila.push(make_pair(0, u));
+
+    while (!fila.empty())
     {
-        return obj.dist > obj1.dist;
+
+        atual = fila.top().second;
+        fila.pop();
+
+        for (int cont = 0; cont < g[atual].size(); cont++)
+        {
+            custo = g[atual][cont].first;
+            elemento = g[atual][cont].second;
+
+            if (peso[elemento] > peso[atual] + custo)
+            {
+                peso[elemento] = peso[atual] + custo;
+                fila.push(make_pair(peso[elemento], elemento));
+            }
+        }
     }
-    friend bool operator<(const dj &obj, const dj &obj1)
+
+    if (peso[v] == max)
     {
-        return obj.dist < obj1.dist;
+        cout << "-1\n";
     }
-};
-void printQueue(priority_queue<int, vector<dj>, greater<dj>> q)
-{
-    //printing content of queue
-    while (!q.empty())
+    else
     {
-        cout << q.top().dist << " ";
-        q.pop();
+        cout << peso[v] << endl;
     }
-    cout << endl;
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    int n, m, i, j, t, inicio, fim;
+
+    int n, m;
+    int a, b, custo;
+    graph g;
+    node vertice;
+    pair<int, int> no;
+
     while (true)
     {
-
-        priority_queue<int, vector<dj>, greater<dj>> q;
-        vector<tuple<int, int, int>> graph;
         cin >> n >> m;
-        if (n == 0 || m == 0)
+
+        if (n == 0 && m == 0)
             break;
-        int dist[250];
-        int used[250];
-        for (int i = 0; i < 250; i++)
+
+        g.clear();
+        g.resize(n);
+
+        for (int cont = 0; cont < m; cont++)
         {
-            dist[i] = INT32_MAX;
-            used[i] = 0;
+            cin >> a >> b >> custo;
+            g[a - 1].push_back(make_pair(custo, b - 1));
         }
 
-        for (int k = 0; k < m; k++)
-        {
-            cin >> i >> j >> t;
+        cin >> a >> b;
 
-            graph.push_back(make_tuple(i - 1, j - 1, t));
-        }
-        cin >> inicio >> fim;
-        inicio--;
-        fim--;
-        dist[inicio] = 0;
-        dj c = {inicio, 0, inicio};
-        q.push(c);
-        while (q.size() > 0)
-        {
-            used[q.top().no] = 1;
-            int atual = q.top().no;
-            q.pop();
-            for (int i = 0; i < m; i++)
-            {
-
-                if (get<0>(graph[i]) == atual && used[get<1>(graph[i])] == 0)
-                {
-                    int temp = dist[atual] + get<2>(graph[i]);
-                    if (temp < dist[get<1>(graph[i])])
-                    {
-                        dist[get<1>(graph[i])] = temp;
-                        dj te = {
-                            get<1>(graph[i]),
-                            dist[get<1>(graph[i])],
-                            atual};
-                        q.push(te);
-                    }
-                }
-            }
-        }
-        if (dist[fim] != INT32_MAX)
-            cout << dist[fim] << endl;
-        else
-        {
-            cout << -1 << endl;
-        }
+        dijkstra(g, a - 1, b - 1);
     }
+
+    return 0;
 }

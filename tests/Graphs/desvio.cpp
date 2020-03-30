@@ -1,146 +1,97 @@
 #include <iostream>
-#include <cstdio>
-#include <cstdlib>
+#include <string>
 #include <vector>
 #include <set>
+#include <map>
+#include <deque>
+#include <cstdio>
+#include <cstdlib>
+#include <algorithm>
+#include <stack>
 #include <queue>
-#include <bits/stdc++.h>
-#include <stdlib.h>
-
+#include <algorithm>
 using namespace std;
-class dj
+#define max 999999
+typedef pair<int, int> no;
+typedef vector<vector<no>> grafo;
+vector<int> dists;
+priority_queue<no> fila;
+void dijkstra(grafo g, int inicio, int fim)
 {
-public:
-    int no;
-    int dist;
-    int go_to;
+    dists.clear();
+    dists.resize(g.size(), max);
+    dists[inicio] = 0;
 
-    friend bool operator>(const dj &obj, const dj &obj1)
+    fila.push(make_pair(dists[inicio], inicio));
+    while (fila.size() > 0)
     {
-        return obj.dist > obj1.dist;
+        int atual = fila.top().second;
+
+        fila.pop();
+        for (int i = 0; i < g[atual].size(); i++)
+        {
+            int e = g[atual][i].second;
+            int c = g[atual][i].first;
+            if (dists[e] > dists[atual] + c)
+            {
+                dists[e] = dists[atual] + c;
+                fila.push(make_pair(dists[e], e));
+            }
+        }
     }
-    friend bool operator<(const dj &obj, const dj &obj1)
-    {
-        return obj.dist < obj1.dist;
-    }
-};
-int mini(int a, int b, int c)
-{
-    int min = a;
-    if (min >= b)
-    {
-        min = b;
-    }
-    if (min >= c)
-    {
-        min = c;
-    }
-    return min;
+
+    cout << dists[fim] << "\n";
 }
 int main()
 {
-
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int n, m, c, k, x, y, t;
-    n = 1;
-    m = 1;
-    c = 1;
-    k = 1;
-    int adj[252][252];
-    int visitados[252];
-    int dists[252];
-    int go_to[252];
-    int sum[252];
-    int temp, min;
-    priority_queue<int, vector<dj>, greater<dj>> q;
-    cin >> n >> m >> c >> k;
-    while (n != 0 || m || 0 && c || 0 && k || 0)
+    grafo g;
+    while (true)
     {
 
-        for (int i = 0; i < n; i++)
+        cin >> n >> m >> c >> k;
+        if (n == 0 && m == 0 && c == 0 && k == 0)
         {
-            visitados[i] = 0;
-            dists[i] = INT16_MAX;
-            go_to[i] = -1;
-            sum[i] = 0;
-            for (int j = 0; j < n; j++)
-            {
 
-                adj[i][j] = INT16_MAX;
-                adj[j][i] = INT16_MAX;
-            }
+            break;
         }
+        g.clear();
+        g.resize(n);
         for (int i = 0; i < m; i++)
         {
             cin >> x >> y >> t;
-            adj[x][y] = t;
-            adj[y][x] = t;
-        }
-        int total = 0;
-        if (k < c - 1)
-        {
-            while (k < c - 1)
+            if (x < c - 1 || y < c - 1)
             {
-                total += adj[k][k + 1];
-                k++;
+                if (y == x + 1)
+                {
+                    g[x].push_back(make_pair(t, y));
+                }
+                else if (x == y + 1)
+                {
+                    g[y].push_back(make_pair(t, x));
+                }
+                else
+                {
+                    if (x > y + 1)
+                    {
+                        g[x].push_back(make_pair(t, y));
+                    }
+                    if (y > x + 1)
+                    {
+                        g[y].push_back(make_pair(t, x));
+                    }
+                }
             }
-            cout << total << endl;
-        }
-        else
-        {
-            for (int i = c - 1; i > 0; i--)
+            else
             {
-                sum[i - 1] = sum[i] + adj[i - 1][i];
+                g[x].push_back(make_pair(t, y));
+                g[y].push_back(make_pair(t, x));
             }
+        }
 
-            dists[k] = 0;
-            dj t1;
-            t1 = {
-                k,
-                0,
-                -1,
-            };
-            q.push(t1);
-            int min = 0;
-            while (q.size() > 0)
-            {
-                visitados[q.top().no] = 1;
-                temp = 0;
-                for (int i = 0; i < n; i++)
-                {
-                    if (i > c - 1)
-                    {
-                        if (adj[q.top().no][i] != INT16_MAX && visitados[i] == 0)
-                        {
-                            temp = adj[q.top().no][i] + dists[q.top().no];
-                            if (dists[i] > temp)
-                            {
-                                dists[i] = temp;
-                                go_to[i] = q.top().no;
-                            }
-                            dj te = {i, dists[i], -1};
-                            q.push(te);
-                        }
-                    }
-                }
-                q.pop();
-            }
-            int l = INT32_MAX;
-            for (int i = 0; i < c - 1; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    int temp = sum[i] + adj[j][i] + dists[j];
-                    if (l > temp)
-                    {
-                        l = temp;
-                    }
-                }
-            }
-            int m = mini(abs(l), abs(dists[c - 1]), abs(adj[c - 1][k]));
-            cout << m << endl;
-        }
-        cin >> n >> m >> c >> k;
+        dijkstra(g, k, c - 1);
     }
+    return 0;
 }

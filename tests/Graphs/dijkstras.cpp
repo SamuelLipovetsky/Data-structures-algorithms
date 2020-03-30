@@ -1,110 +1,71 @@
 #include <iostream>
-#include <cstdio>
-#include <cstdlib>
+#include <string>
 #include <vector>
 #include <set>
+#include <map>
+#include <deque>
+#include <cstdio>
+#include <cstdlib>
+#include <algorithm>
+#include <stack>
 #include <queue>
-#include <bits/stdc++.h>
 using namespace std;
-class dj
+#define max 999999
+typedef pair<int, int> no;
+typedef vector<vector<no>> grafo;
+vector<int> dists;
+priority_queue<no> fila;
+void dijkstra(grafo g, int inicio, int fim)
 {
-public:
-    int no;
-    int dist;
-    int pre;
+    dists.clear();
+    dists.resize(g.size(), max);
+    dists[inicio] = 0;
 
-    friend bool operator>(const dj &obj, const dj &obj1)
+    fila.push(make_pair(dists[inicio], inicio));
+    while (fila.size() > 0)
     {
-        return obj.dist > obj1.dist;
+        int atual = fila.top().second;
+
+        fila.pop();
+        for (int i = 0; i < g[atual].size(); i++)
+        {
+            int e = g[atual][i].second;
+            int c = g[atual][i].first;
+            if (dists[e] > dists[atual] + c)
+            {
+                dists[e] = dists[atual] + c;
+                fila.push(make_pair(dists[e], e));
+            }
+        }
     }
-    friend bool operator<(const dj &obj, const dj &obj1)
+    if (dists[fim] != max)
+        cout << dists[fim] << endl;
+    else
     {
-        return obj.dist < obj1.dist;
+        cout << -1 << endl;
     }
-};
-void printQueue(priority_queue<int, vector<dj>> q)
-{
-    //printing content of queue
-    while (!q.empty())
-    {
-        cout << " " << q.top().no;
-        q.pop();
-    }
-    cout << endl;
 }
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    int n, m, i, j, t, inicio, fim;
-
-    priority_queue<int, vector<dj>, greater<dj>> q;
-
+    int n, m, x, y, t, inicio, fim;
+    grafo g;
     while (true)
     {
-        int adj[200][200];
-        int visited[200];
-        int dists[200];
-        int pre[200];
+
         cin >> n >> m;
-        if (n == 0 || m == 0)
+        if (n == 0 && m == 0)
+        {
             break;
-        for (int i = 0; i < 200; i++)
-        {
-            dists[i] = INT32_MAX;
-            visited[i] = 0;
-            pre[i] = 0;
-            for (int j = 0; j < 200; j++)
-            {
-                adj[i][j] = INT32_MAX;
-            }
         }
-
-        for (int k = 0; k < m; k++)
+        g.clear();
+        g.resize(n);
+        for (int i = 0; i < m; i++)
         {
-            cin >> i >> j >> t;
-            if (t < adj[i - 1][j - 1])
-                adj[i - 1][j - 1] = t;
+            cin >> x >> y >> t;
+            g[x - 1].push_back(make_pair(t, y - 1));
         }
-
         cin >> inicio >> fim;
-
-        fim--;
-        inicio--;
-        dists[inicio] = 0;
-        dj in;
-        in = {inicio, 0, inicio};
-        q.push(in);
-        int temp = 0;
-        int go = 0;
-        int min = INT32_MAX;
-        int d = 5;
-
-        while (q.size() > 0)
-        {
-            visited[q.top().no] = 1;
-            temp = 0;
-            int atual = q.top().no;
-            q.pop();
-            for (int i = 0; i < n; i++)
-            {
-
-                if (adj[atual][i] != INT32_MAX && visited[i] == 0)
-                {
-
-                    temp = adj[atual][i] + dists[atual];
-                    if (dists[i] > temp)
-                    {
-                        dists[i] = temp;
-                    }
-                    dj te = {i, dists[i], atual};
-                    q.push(te);
-                }
-            }
-        }
-        if (dists[fim] == INT32_MAX)
-            cout << "-1" << endl;
-        else
-            cout << dists[fim] << endl;
+        dijkstra(g, inicio - 1, fim - 1);
     }
+    return 0;
 }
