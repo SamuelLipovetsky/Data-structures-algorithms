@@ -17,82 +17,64 @@
 using namespace std;
 #define max 9999999
 
-typedef vector<vector<double>> graph;
-
-double dist(double x1, double y1, double x2, double y2)
+double cord[1000][2];
+double g[1000][1000];
+set<int> setu;
+vector<int> u;
+int n;
+void prim()
 {
-    double a = sqrt(pow((x1 - x2), 2) + pow((y1 - y2), 2));
-
-    return a;
-}
-vector<double> all;
-
-int c = 0;
-// é necessario remover os gravos para o bfs ser mais rapido;
-void bfs(graph g, int inicio, int fim)
-{
-    graph n = g;
-    c++;
     cout.precision(4);
     cout << fixed;
-    double limite = all[inicio + ceil((fim - inicio) / 2)];
-    int point = ceil((fim - inicio) / 2);
-    if (point == 1)
+    setu.clear();
+    u.clear();
+    setu.insert(0);
+    u.push_back(0);
+    double min = 0;
+    int to_add;
+    int atual;
+    double m = 0;
+    while (true)
     {
-        cout << limite << endl;
-    }
-    else
-    {
-        vector<int> usados;
-        queue<int> fila;
-        usados.clear();
-        usados.resize(g.size(), 0);
-        fila.emplace(0);
-        int count = 0;
-
-        while (fila.size() > 0)
+        min = max;
+        to_add = 0;
+        int aa;
+        if (u.size() == n)
         {
-            int atual = fila.front();
-            if (usados[atual] == 0)
-                count++;
-            usados[atual] = 1;
-
-            for (int j = 0; j < g[atual].size(); j++)
+            break;
+        }
+        for (int i = 0; i < u.size(); i++)
+        {
+            atual = u[i];
+            for (int j = 0; j < n; j++)
             {
-                if (g[atual][j] < limite)
+                double custo = g[atual][j];
+                int prox = j;
+                if (custo < min && setu.count(prox) == 0)
                 {
-                    if (usados[j] == 0)
-                    {
-
-                        fila.emplace(j);
-                    }
-                }
-                else
-                {
-                    g[atual].erase(g[atual].begin() + j);
+                    min = custo;
+                    to_add = j;
+                    aa = atual;
                 }
             }
-            fila.pop();
         }
 
-        if (count == g.size())
+        u.push_back(to_add);
+        setu.insert(to_add);
+        if (g[aa][to_add] > m)
         {
-            bfs(g, inicio, fim - point);
-        }
-        else
-        {
-            bfs(n, inicio + point, fim);
+            m = g[aa][to_add];
         }
     }
+
+    cout << m << "\n";
 }
 int main()
 {
 
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    int n;
     double x, y;
-
     while (true)
     {
 
@@ -101,15 +83,6 @@ int main()
             break;
         else
         {
-            graph g;
-            all.clear();
-            g.clear();
-            g.resize(n);
-            for (int i = 0; i < n; i++)
-            {
-                g[i].resize(n);
-            }
-            double cord[n][2];
 
             for (size_t i = 0; i < n; i++)
             {
@@ -124,22 +97,13 @@ int main()
                 {
                     if (i != j)
                     {
-                        double temp = dist(cord[i][0], cord[i][1], cord[j][0], cord[j][1]);
+                        double temp = sqrt(pow((cord[i][0] - cord[j][0]), 2) + pow((cord[i][1] - cord[j][1]), 2));
                         g[i][j] = temp;
                         g[j][i] = temp;
-                        all.push_back(temp);
-                        all.push_back(temp);
                     }
                 }
             }
-            sort(all.begin(), all.end());
-            if (n == 1)
-                cout << g[0][0] << endl;
-            else if (n == 2)
-                cout << g[1][0] << endl;
-            else
-                bfs(g, 0, all.size() - 1);
-            cout << c << endl;
+            prim();
         }
     }
 }

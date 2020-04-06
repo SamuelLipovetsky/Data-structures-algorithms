@@ -13,13 +13,15 @@
 #include <math.h>
 #include <cmath>
 #include <iomanip>
+#include <math.h>
 using namespace std;
+#define max 9999999
+typedef pair<int, int> node;
+typedef vector<vector<node>> graph;
+
 int main()
 {
-    cout << 100 << " " << 1000 << endl;
-    for (int i = 0; i < 1000; i++)
-    {
-        cout << rand() % 100 << " " << rand() % 100 << " " << rand() % 100 << " ";
-    }
-    cout << 0;
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 }
