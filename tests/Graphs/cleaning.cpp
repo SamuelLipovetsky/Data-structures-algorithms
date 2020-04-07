@@ -23,10 +23,9 @@ using namespace std;
 #define mnos 21
 //mostra as celulas limpas sujas etc;
 char tabela[21][21];
-int distancias[mrow][mcol][mnos];
-int usados[21][21] = {0};
-
+int distancias[21][21][mnos];
 int dp[mnos][2060];
+int usados[21][21];
 int limit, len, row, col;
 vector<pair<int, int>> sujos;
 
@@ -41,26 +40,39 @@ bool safe(int x, int y)
 }
 int posx[4] = {1, -1, 0, 0};
 int posy[4] = {0, 0, 1, -1};
-
-int bfs(pair<int, int> c, int no)
+void init()
 {
-    queue<pair<int, int>> fila;
-    for (int i = 0; i < col; i++)
+
+    for (int i = 0; i < len + 1; i++)
     {
-        for (int j = 0; j < row; j++)
+        for (int j = 0; j < limit; j++)
         {
-            distancias[i][j][no] = max;
+            dp[i][j] = -1;
         }
     }
+}
+void bfs(pair<int, int> c, int no)
+{
+    queue<pair<int, int>> fila;
 
     distancias[c.first][c.second][no] = 0;
     fila.emplace(c);
+
+    for (int i = 0; i < 21; i++)
+    {
+        for (int j = 0; j < 21; j++)
+        {
+            usados[i][j] = 0;
+        }
+    }
+
     while (!fila.empty())
     {
 
         int x = fila.front().first;
         int y = fila.front().second;
         fila.pop();
+
         for (int i = 0; i < 4; i++)
         {
 
@@ -110,13 +122,14 @@ int main()
     cin.tie(NULL);
     while (true)
     {
-        pair<int, int> inicial;
+
         cin >> row >> col;
         sujos.clear();
         if (row == 0 || col == 0)
         {
             break;
         }
+        pair<int, int> c;
         for (int i = 0; i < col; i++)
         {
             for (int j = 0; j < row; j++)
@@ -127,19 +140,23 @@ int main()
                     sujos.push_back(make_pair(i, j));
                 else if (tabela[i][j] == 'o')
                 {
-                    inicial = make_pair(i, j);
+                    c = make_pair(i, j);
                 }
             }
         }
 
-        sujos.insert(sujos.begin(), inicial);
+        sujos.insert(sujos.begin(), c);
         len = sujos.size();
         limit = (1 << sujos.size()) - 1;
-        for (int i = 0; i < sujos.size() + 1; i++)
+        init();
+        for (int k = 0; k < len; k++)
         {
-            for (int j = 0; j <= limit; j++)
+            for (int i = 0; i < col; i++)
             {
-                dp[i][j] = -1;
+                for (int j = 0; j < row; j++)
+                {
+                    distancias[i][j][k] = max;
+                }
             }
         }
 
@@ -149,6 +166,7 @@ int main()
         }
 
         int ans = solve(0, 1);
+
         if (ans != max)
             cout << ans << endl;
         else

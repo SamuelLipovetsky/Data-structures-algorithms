@@ -47,7 +47,35 @@ void dijkstra(graph g, int o, int d, int t)
     }
     cout << dists[d] << endl;
 }
+int bfs(pair<int, int> c, int no)
+{
+    queue<pair<int, int>> fila;
 
+    distancias[c.first][c.second][no] = 0;
+    fila.emplace(c);
+    int usados[21][21] = {{0}};
+    while (!fila.empty())
+    {
+        int x = fila.front().first;
+        int y = fila.front().second;
+        fila.pop();
+        usados[x][y] = 1;
+        for (int i = 0; i < 4; i++)
+        {
+
+            if (!usados[x + posx[i]][y + posy[i]] && safe(x + posx[i], y + posy[i]))
+            {
+
+                fila.push(make_pair(x + posx[i], y + posy[i]));
+
+                if (distancias[x + posx[i]][y + posy[i]][no] > distancias[x][y][no] + 1)
+                {
+                    distancias[x + posx[i]][y + posy[i]][no] = distancias[x][y][no] + 1;
+                }
+            }
+        }
+    }
+}
 int main()
 {
 
