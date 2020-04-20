@@ -18,7 +18,6 @@ typedef pair<int, int> node;
 typedef vector<vector<node>> graph;
 void dijkstra(graph g, int u, int v)
 {
-
     // Variaveis;
     vector<int> peso;
     priority_queue<node> fila;
