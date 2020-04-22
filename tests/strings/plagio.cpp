@@ -14,25 +14,66 @@
 using namespace std;
 #define infinito 9999999
 vector<vector<int>> table;
-
-char lcs(vector<int> b, vector<int> a)
+int suf[100000];
+char kmp(vector<int> trecho, vector<int> musica)
 {
-    int co = 0;
-    for (int i = 0; i < b.size(); i++)
-    {
-        cout << a[i] << " " << b[co] << endl;
+    int m = musica.size() - 1;
+    int t = trecho.size() - 1;
+    int i = 0, j = 1;
+    suf[0] = 0;
 
-        if (co == b.size())
-            return 'S';
-        if (a[i] == b[co])
+    while (i < t)
+    {
+        if (trecho[i] == trecho[j])
         {
-            co++;
+            suf[j] = i + 1;
+
+            i++;
+            j++;
         }
         else
         {
-            co = 0;
+            if (j != 0)
+            {
+                j = suf[j - 1];
+            }
+            else
+            {
+                suf[j] = 0;
+
+                j++;
+            }
         }
     }
+    for (int k = 0; k < t; k++)
+    {
+        cout << suf[k] << " ";
+    }
+
+    // i = 0;
+    // j = 1;
+    // while (i < m)
+    // {
+    //     // cout << j << " ";
+    //     if (j == t - 1)
+    //         return 'S';
+    //     if (musica[i] == trecho[j])
+    //     {
+    //         i++;
+    //         j++;
+    //     }
+    //     else
+    //     {
+    //         if (j != 0)
+    //         {
+    //             j = suf[j - 1];
+    //         }
+    //         else
+    //         {
+    //             i++;
+    //         }
+    //     }
+    // }
     return 'N';
 }
 int main()
@@ -171,5 +212,5 @@ int main()
             intervalost[i] = val[v2[i + 1]] - val[v2[i]];
         }
     }
-    cout << lcs(intervalost, intervalos);
+    cout << kmp(intervalost, intervalos);
 }
