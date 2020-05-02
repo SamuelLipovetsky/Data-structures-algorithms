@@ -3,97 +3,110 @@
 #include <string>
 #include <vector>
 using namespace std;
+int lcs[82][82];
 string a;
 string b;
-int l = 0;
-int lcs[81][81];
-printLcs()
+int size_a;
+int size_b;
+//set first line and first collum to 0
+void setZero()
 {
-    for (int i = 1; i < a.size() + 1; i++)
+    for (int i = 0; i <= size_a; i++)
     {
-        for (int j = 1; j < b.size() + 1; j++)
-        {
-            cout << lcs[i][j] << " ";
-        }
-        cout << endl;
+        lcs[0][i] = 0;
     }
-    cout << lcs[a.size()][b.size()];
-}
-int set_zero()
-{
-    //checar os tamanhos
-    for (int i = 0; i < a.size(); i++)
+    for (int i = 0; i <= size_b; i++)
     {
-        for (int j = 0; j < b.size(); j++)
-        {
-            lcs[i][j] = 0;
-        }
+        lcs[i][0] = 0;
     }
 }
-int getall()
+// make the lcs table for a b;
+void make_lcs()
 {
-    vector<char> all[81];
-
-    int tam[81] = {};
-    int usados[81][25] = {};
-    for (int i = 1; i < a.size() + 1; i++)
+    int size_a = a.size();
+    int size_b = b.size();
+    setZero();
+    for (int i = 1; i <= size_a; i++)
     {
-        for (int j = 1; j < b.size() + 1; j++)
+        for (int j = 1; j <= size_b; j++)
         {
-
-            if (a[i - 1] == b[j - 1] && usados[lcs[i - 1][j - 1]][b[j - 1] - 97] == 0)
+            if (a[i - 1] == b[j - 1])
             {
-                all[lcs[i - 1][j - 1]].push_back(a[i - 1]);
-                usados[i - 1][b[j - 1] - 97] = 1;
-                tam[i - 1]++;
+                lcs[i][j] = lcs[i - 1][j - 1] + 1;
+            }
+            else
+            {
+                lcs[i][j] = max(lcs[i - 1][j], lcs[i][j - 1]);
             }
         }
     }
-
-    for (int i = 0; i < l; i++)
-    {
-        cout << "{ ";
-        for (auto j : all[i])
-        {
-            cout << j << " ";
-        }
-        cout << "} \n ";
-    }
 }
-int Common()
+//x and y are pointer to the index of strings  a and b
+void print(string sufix, int x, int y)
 {
-    set_zero();
-
-    for (int i = 0; i < a.size() + 1; i++)
+    // cout << x << " " << y << endl;
+    if (sufix.size() == lcs[size_a][size_b])
     {
-        for (int j = 0; j < b.size() + 1; j++)
+        cout << sufix << endl;
+    }
+    else if (x < size_a && y < size_b)
+    {
+
+        if (a[x] == b[y])
         {
-            if (j > 0 && i > 0)
+            print(sufix + a[x], x + 1, y + 1);
+        }
+        else
+        {
+
+            if (x < size_a - 1 && y < size_b - 1)
             {
-                if (a[i - 1] == b[j - 1])
+                if (a[x + 1] == b[y + 1])
+                    print(sufix, x + 1, y);
+
+                else
                 {
-                    lcs[i][j] = lcs[i - 1][j - 1] + 1;
+                    if ((int)a[x] > (int)b[y])
+                    {
+                        print(sufix, x + 1, y);
+                        print(sufix, x, y + 1);
+                    }
+                    else
+                    {
+                        print(sufix, x, y + 1);
+                        print(sufix, x + 1, y);
+                    }
+                }
+            }
+            else
+            {
+                if (x < size_a - 1)
+                {
+                    print(sufix, x + 1, y);
                 }
                 else
                 {
-                    lcs[i][j] = max(lcs[i][j - 1], lcs[i - 1][j]);
+                    print(sufix, x, y + 1);
                 }
             }
         }
     }
-    // printLcs();
-    l = lcs[a.size()][b.size()];
 }
 int main()
 {
-    int m;
-    // cin >> m;
-    string aa, bb;
-    // for (int i = 0; i < m; i++)
-    // {
-    getline(cin, a);
-    getline(cin, b);
-    Common();
-    getall();
-    // }
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a;
+        cin >> b;
+        size_a = a.size();
+        size_b = b.size();
+        make_lcs();
+        print("", 0, 0);
+        cout << endl;
+    }
 }
