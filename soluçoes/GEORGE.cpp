@@ -35,7 +35,7 @@ int remaining(int expended, int atual_node, int togo_node)
         return 0;
     }
 }
-// simple djisktra ,but considering the waiting times.
+// simple djisktra ,but considering the waiting time.
 void dijkstra(int inicio, int end)
 {
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> fila;
