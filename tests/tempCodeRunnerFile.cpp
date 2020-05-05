@@ -1,2 +1,2 @@
 
-            int64_t mask = 0;
+    cin.tie(NULL);
