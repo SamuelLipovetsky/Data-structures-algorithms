@@ -15,7 +15,7 @@ long double dist(pair<int, int> a, pair<int, int> b)
 }
 long double func(int i, int f)
 {
-    // cout << i << " " << f << endl;
+
     int mid = floor((f + i + 1) / 2);
     if (i + 1 == f)
     {
