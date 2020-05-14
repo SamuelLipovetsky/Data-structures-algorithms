@@ -14,8 +14,7 @@ int distancia_voltando[10002];
 void dijkstra(int inicial, int distancias[10002], graph g)
 {
     int n = g.size();
-    vector<int> usados;
-    usados.resize(n, 0);
+
     for (int i = 0; i < n; i++)
     {
         distancias[i] = infinito;
@@ -27,19 +26,17 @@ void dijkstra(int inicial, int distancias[10002], graph g)
     while (fila.size() > 0)
     {
         int atual = fila.top().second;
-        usados[atual] = 1;
+
         for (int i = 0; i < g[atual].size(); i++)
         {
 
             int elemento = g[atual][i].second;
             int peso = g[atual][i].first;
-            if (usados[elemento] == 0)
+
+            if (distancias[elemento] > distancias[atual] + peso)
             {
-                if (distancias[elemento] > distancias[atual] + peso)
-                {
-                    distancias[elemento] = distancias[atual] + peso;
-                    fila.emplace(make_pair(distancias[elemento], elemento));
-                }
+                distancias[elemento] = distancias[atual] + peso;
+                fila.emplace(make_pair(distancias[elemento], elemento));
             }
         }
         fila.pop();
